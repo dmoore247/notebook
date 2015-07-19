@@ -67,7 +67,7 @@ WORKDIR /jupyter/
 RUN git clone https://github.com/dmoore247/notebook.git
 
 WORKDIR notebook
-RUN pip-install.sh
+RUN bash /jupyter/notebook/pip-install.sh
 
 # Start it up
-ENTRYPOINT /jupyter/notebook/bootstrap.sh
+ENTRYPOINT bash /jupyter/notebook/bootstrap.sh

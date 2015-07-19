@@ -1,4 +1,5 @@
 # necessary for Centos 6
+cd /jupyter
 pip install virtualenv
 pip install virtualenvwrapper
 virtualenv venv

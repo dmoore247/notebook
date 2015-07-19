@@ -65,4 +65,4 @@ RUN make && make altinstall
 WORKDIR /jupyter/
 RUN git clone https://github.com/dmoore247/notebook.git
 
-ENTRYPOINT jupyter notebook
+ENTRYPOINT /jupyter/notebook/bootstrap.sh

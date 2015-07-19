@@ -2,24 +2,20 @@
 # Another Docker container should inherit with `FROM jupyter/notebook`
 # to run actual services.
 
-FROM ubuntu:14.04
+FROM centos:centos6
 
 MAINTAINER Project Jupyter <jupyter@googlegroups.com>
 
-ENV DEBIAN_FRONTEND noninteractive
+EXPOSE 8888
 
 # Not essential, but wise to set the lang
 # Note: Users with other languages should set this in their derivative image
-RUN apt-get update && apt-get install -y language-pack-en
-ENV LANGUAGE en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
+RUN yum -y update
 
-RUN locale-gen en_US.UTF-8
-RUN dpkg-reconfigure locales
+RUN yum -y install epel-release
 
 # Python binary dependencies, developer tools
-RUN apt-get update && apt-get install -y -q \
+RUN yum -y install \
     build-essential \
     make \
     gcc \
@@ -27,6 +23,7 @@ RUN apt-get update && apt-get install -y -q \
     git \
     python \
     python-dev \
+    python-virtualenv \
     python-pip \
     python3-dev \
     python3-pip \
@@ -41,26 +38,31 @@ RUN apt-get update && apt-get install -y -q \
     nodejs-legacy \
     npm
 
-RUN pip2 install --upgrade setuptools pip
-RUN pip3 install --upgrade setuptools pip
+RUN yum -y groupinstall "Development tools"
 
-RUN mkdir -p /srv/
-WORKDIR /srv/
-RUN git clone --depth 1 https://github.com/ipython/ipykernel /srv/ipykernel
-WORKDIR /srv/ipykernel
-RUN pip2 install -r requirements.txt -e .
-RUN pip3 install -r requirements.txt -e .
 
-ADD . /srv/notebook
-WORKDIR /srv/notebook/
-RUN chmod -R +rX /srv/notebook
+RUN yum -y install \
+        zlib-devel \
+        bzip2-devel \
+        openssl-devel \
+        ncurses-devel \
+        sqlite-devel \
+        wget \
+        tar \
+        sudo \
+        which
 
-RUN pip3 install -r requirements.txt -e .[test]
+# install python 2.7
+WORKDIR /opt
+RUN wget --no-check-certificate https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tar.xz
+RUN tar xf Python-2.7.9.tar.xz
+WORKDIR Python-2.7.9
+RUN ./configure --prefix=/usr/local
+RUN make && make altinstall
 
-# install kernels
-RUN python2 -m ipykernel.kernelspec
-RUN python3 -m ipykernel.kernelspec
 
-WORKDIR /tmp/
+# install pip
+WORKDIR /jupyter/
+RUN git clone https://github.com/dmoore247/notebook.git
 
-RUN nosetests notebook
+ENTRYPOINT jupyter notebook

@@ -62,7 +62,12 @@ RUN make && make altinstall
 
 
 # install pip
+# install pip
 WORKDIR /jupyter/
 RUN git clone https://github.com/dmoore247/notebook.git
 
+WORKDIR notebook
+RUN pip-install.sh
+
+# Start it up
 ENTRYPOINT /jupyter/notebook/bootstrap.sh

@@ -5,9 +5,8 @@ pip install virtualenvwrapper
 virtualenv venv
 virtualenv -p /usr/local/bin/python2.7 venv
 source venv/bin/activate
-cd notebook
+cd /jupyter/notebook
 pip --version
+pip list
 pip install --upgrade setuptools
-pip install functools32
-pip install terminado
 pip install -r requirements.txt -e .

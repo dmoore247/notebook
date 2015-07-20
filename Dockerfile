@@ -6,7 +6,6 @@ FROM centos:centos6
 
 MAINTAINER Project Jupyter <jupyter@googlegroups.com>
 
-EXPOSE 8888
 
 # Not essential, but wise to set the lang
 # Note: Users with other languages should set this in their derivative image
@@ -68,5 +67,7 @@ RUN git clone https://github.com/dmoore247/notebook.git
 WORKDIR notebook
 RUN bash /jupyter/notebook/pip-install.sh
 
+RUN chmod +x /jupyter/notebook/bootstrap.sh
 # Start it up
-# ENTRYPOINT bash /jupyter/notebook/bootstrap.sh
+CMD ["/jupyter/notebook/bootstrap.sh", "-bash"]
+EXPOSE 8888

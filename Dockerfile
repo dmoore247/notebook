@@ -69,4 +69,4 @@ WORKDIR notebook
 RUN bash /jupyter/notebook/pip-install.sh
 
 # Start it up
-ENTRYPOINT bash /jupyter/notebook/bootstrap.sh
+# ENTRYPOINT bash /jupyter/notebook/bootstrap.sh

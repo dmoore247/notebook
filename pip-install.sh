@@ -10,3 +10,4 @@ pip --version
 pip list
 pip install --upgrade setuptools
 pip install -r requirements.txt -e .
+pip install terminado functools32

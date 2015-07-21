@@ -67,7 +67,17 @@ RUN git clone https://github.com/dmoore247/notebook.git
 WORKDIR notebook
 RUN bash /jupyter/notebook/pip-install.sh
 
+# npm install
+RUN npm config set prefix /usr/local &&  npm install -g bower &&  npm install -g gulp
+
+# install bower and node and web stuff
+RUN source /jupyter/venv/bin/activate && python setup.py install
+
+# fixup bootstrap.sh
 RUN chmod +x /jupyter/notebook/bootstrap.sh
+
 # Start it up
 CMD ["/jupyter/notebook/bootstrap.sh", "-bash"]
+
+# Permit the world in
 EXPOSE 8888

@@ -76,8 +76,13 @@ RUN source /jupyter/venv/bin/activate && python setup.py install
 # fixup bootstrap.sh
 RUN chmod +x /jupyter/notebook/bootstrap.sh
 
+WORKDIR /jupyter/notebooks
+
+VOLUME ["/jupyter/notebooks"]
+
 # Start it up
 CMD ["/jupyter/notebook/bootstrap.sh", "-bash"]
+# CMD ["/bin/bash"]
 
 # Permit the world in
 EXPOSE 8888

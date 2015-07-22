@@ -1,30 +1,17 @@
-# Jupyter Notebook
+# Docker for Jupyter Notebook
 
-The Jupyter HTML notebook is a web-based notebook environment for interactive computing.
+The Jupyter HTML notebook is a web-based notebook environment for interactive computing packaged into a Docker image
+
+Requirements:
+* Win/Mac: boot2docker 1.7.1 or greater
+
+
 
 Dev quickstart:
 
-* Create a virtual env (ie jupyter-dev)
-* ensure that you have node/npm installed (ie brew install node on OS X)
-* Clone this repo and cd into it
-* pip install -r requirements.txt -e .
+* run -d -i -p 8888:8888 -v ~/notebooks:/jupyter/notebooks dmoore247/jupyter:0.9.3
 
-_NOTE_: For Debian/Ubuntu systems, if you're installing the system node you need
-to use the 'nodejs-legacy' package and not the 'node' package.
 
 Launch with:
-
-    jupyter notebook
-
-For Ubuntu Trusty:
-```
-sudo apt-get install nodejs-legacy npm python-virtualenv python-dev
-python2 -m virtualenv ~/.virtualenvs/notebook
-source ~/.virtualenvs/notebook/bin/activate
-pip install --upgrade setuptools pip
-git clone https://github.com/jupyter/notebook.git
-cd notebook
-pip install -r requirements.txt -e .
-jupyter notebook
-```
-
+	export IP=`boot2docker ip`
+	open http://$IP:8888/

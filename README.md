@@ -15,4 +15,4 @@ Launch with:
 
 
 ## Build Instructions
-* docker build -t `cat version` .
+* ``docker build -t `cat version` .``

@@ -7,7 +7,7 @@ Requirements:
 
 Dev quickstart:
 * ``mkdir ~/notebooks``
-* ``docker run -d -p 8888:8888 -v ~/notebooks:/jupyter/notebooks -t -i dmoore247/jupyter:0.9.4``
+* ``docker run -d -p 8888:8888 -v ~/notebooks:/jupyter/notebooks jupyter:latest jupyter notebook --no-browser --ip=0.0.0.0``
 
 Launch with:
 * ``export IP=`boot2docker ip` ``

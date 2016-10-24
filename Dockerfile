@@ -47,31 +47,32 @@ RUN yum -y install \
 RUN yum -y install java
 
 RUN pip install pandas
+RUN pip install datetime
+RUN pip install missingno
 RUN pip install numpy
-RUN pip install --no-cache-dir scipy==0.15.1
-RUN pip install --no-cache-dir gensim==0.12.1
-RUN pip install -U scikit-learn
-RUN pip install git+https://github.com/jpmml/sklearn2pmml.git
 RUN pip install jupyter
+
+RUN pip install statsmodels
 RUN pip install matplotlib
 RUN pip install pygal
 RUN pip install geoplotlib
-RUN pip install missingno
 RUN pip install networkx
-RUN pip install pybrain
 RUN pip install nltk
-RUN pip install datetime
 RUN pip install -U textblob
 
-RUN pip install statsmodels
 RUN pip install bokeh
 RUN pip install ggplot
-RUN pip install struct
-RUN pip install os
 
 RUN yum -y install graphviz
 RUN pip install graphviz
 RUN pip install pydotplus
+
+RUN pip install pybrain
+RUN pip install --no-cache-dir scipy==0.15.1
+RUN pip install --no-cache-dir gensim==0.12.1
+#RUN pip install -U scikit-learn==0.17.1
+RUN pip install -U scikit-learn
+#RUN pip install git+https://github.com/jpmml/sklearn2pmml.git
 
 RUN mkdir -p /opt
 RUN wget https://raw.githubusercontent.com/dmoore247/notebook/master/bootstrap.sh -O /opt/bootstrap.sh && chmod +x /opt/bootstrap.sh

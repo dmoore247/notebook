@@ -1,19 +1,13 @@
-# Installs Jupyter Notebook and IPython kernel from the current branch
-# Another Docker container should inherit with `FROM jupyter/notebook`
-# to run actual services.
+FROM centos
 
-FROM centos:centos6
-
-MAINTAINER Project Jupyter <jupyter@googlegroups.com>
-
-
-# Not essential, but wise to set the lang
-# Note: Users with other languages should set this in their derivative image
+# update
 RUN yum -y update
+RUN yum -y install wget
 
-RUN yum -y install epel-release
+# install pip
+RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py" && python ./get-pip.py
 
-# Python binary dependencies, developer tools
+
 RUN yum -y install \
     build-essential \
     make \
@@ -39,7 +33,6 @@ RUN yum -y install \
 
 RUN yum -y groupinstall "Development tools"
 
-
 RUN yum -y install \
         zlib-devel \
         bzip2-devel \
@@ -51,38 +44,46 @@ RUN yum -y install \
         sudo \
         which
 
-# install python 2.7
-WORKDIR /opt
-RUN wget --no-check-certificate https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tar.xz
-RUN tar xf Python-2.7.9.tar.xz
-WORKDIR Python-2.7.9
-RUN ./configure --prefix=/usr/local
-RUN make && make altinstall
+RUN yum -y install java
 
+RUN pip install pandas
+RUN pip install numpy
+RUN pip install --no-cache-dir scipy==0.15.1
+RUN pip install --no-cache-dir gensim==0.12.1
+RUN pip install -U scikit-learn
+RUN pip install git+https://github.com/jpmml/sklearn2pmml.git
+RUN pip install jupyter
+RUN pip install matplotlib
+RUN pip install pygal
+RUN pip install geoplotlib
+RUN pip install missingno
+RUN pip install networkx
+RUN pip install pybrain
+RUN pip install nltk
+RUN pip install datetime
+RUN pip install -U textblob
 
-# install pip
-WORKDIR /jupyter/
-RUN git clone https://github.com/dmoore247/notebook.git
+RUN pip install statsmodels
+RUN pip install bokeh
+RUN pip install ggplot
+RUN pip install struct
+RUN pip install os
 
-WORKDIR notebook
-RUN bash /jupyter/notebook/pip-install.sh
+RUN yum -y install graphviz
+RUN pip install graphviz
+RUN pip install pydotplus
 
-# npm install
-RUN npm config set prefix /usr/local &&  npm install -g bower &&  npm install -g gulp
+RUN mkdir -p /opt
+RUN wget https://raw.githubusercontent.com/dmoore247/notebook/master/bootstrap.sh -O /opt/bootstrap.sh && chmod +x /opt/bootstrap.sh
 
-# install bower and node and web stuff
-RUN source /jupyter/venv/bin/activate && python setup.py install
-
-# fixup bootstrap.sh
-RUN chmod +x /jupyter/notebook/bootstrap.sh
+RUN mkdir -p /jupyter/notebooks/notebook
 
 WORKDIR /jupyter/notebooks
-
 VOLUME ["/jupyter/notebooks"]
 
 # Start it up
-CMD ["/jupyter/notebook/bootstrap.sh", "-bash"]
-# CMD ["/bin/bash"]
+CMD ["/opt/bootstrap.sh", "-bash"]
 
-# Permit the world in
+# CMD ["/usr/bin/jupyter","--ip=0.0.0.0","notebook" "--no-browswer"]
+
 EXPOSE 8888

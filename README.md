@@ -6,7 +6,7 @@ Requirements:
 * Win/Mac: Docker Version 1.12.1
 
 Build Instructions
-* ``docker build -t jupyter - < Dockerfile``
+* ``docker build -t dmoore247/jupyter .``
 
 Dev quickstart:
 * ``mkdir ~/notebooks``

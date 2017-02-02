@@ -1,4 +1,4 @@
-FROM centos
+FROM centos:latest
 
 # update
 RUN yum -y update
@@ -46,45 +46,34 @@ RUN yum -y install \
 
 RUN yum -y install java
 
-RUN pip install pandas
-RUN pip install datetime
-RUN pip install missingno
-RUN pip install numpy
+RUN /usr/bin/pip install pandas numpy pytz pyparsing datetime missingno
+
 RUN pip install jupyter
 
-RUN pip install statsmodels
-RUN pip install matplotlib
-RUN pip install pygal
-RUN pip install geoplotlib
-RUN pip install networkx
+RUN pip install statsmodels matplotlib pygal geoplotlib networkx bokeh ggplot
+
 RUN pip install nltk
 RUN pip install -U textblob
 
-RUN pip install bokeh
-RUN pip install ggplot
+RUN yum -y install graphviz && pip install graphviz pydotplus
 
-RUN yum -y install graphviz
-RUN pip install graphviz
-RUN pip install pydotplus
+# RUN pip install pybrain
+# RUN pip install --no-cache-dir scipy==0.15.1
+# RUN pip install --no-cache-dir gensim==0.12.1
+# RUN pip install -U scikit-learn
+##RUN pip install git+https://github.com/jpmml/sklearn2pmml.git
 
-RUN pip install pybrain
-RUN pip install --no-cache-dir scipy==0.15.1
-RUN pip install --no-cache-dir gensim==0.12.1
-#RUN pip install -U scikit-learn==0.17.1
-RUN pip install -U scikit-learn
-#RUN pip install git+https://github.com/jpmml/sklearn2pmml.git
+ADD bootstrap.sh /opt/bootstrap.sh
+RUN chmod +x /opt/bootstrap.sh
+ADD jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
 
-RUN mkdir -p /opt
-RUN wget https://raw.githubusercontent.com/dmoore247/notebook/master/bootstrap.sh -O /opt/bootstrap.sh && chmod +x /opt/bootstrap.sh
-
-RUN mkdir -p /jupyter/notebooks/notebook
+RUN mkdir -p /jupyter/notebooks/notebook && mkdir -p /jupyter/notebooks/docs
 
 WORKDIR /jupyter/notebooks
 VOLUME ["/jupyter/notebooks"]
 
 # Start it up
 CMD ["/opt/bootstrap.sh", "-bash"]
-
-# CMD ["/usr/bin/jupyter","--ip=0.0.0.0","notebook" "--no-browswer"]
+# CMD ["bash"]
 
 EXPOSE 8888
